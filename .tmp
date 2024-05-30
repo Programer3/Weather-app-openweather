@@ -1,0 +1,171 @@
+// old mine code
+
+// -const apikey = "";
+// -// const urltype = ["q=London", "zip=94040,us", "lat=57&lon=-2.15"];
+// -const weatherurl = 'https://api.openweathermap.org/data/2.5/weather?';
+// -const searchbox = document.querySelector(".search input");
+// -const searchbtn = document.querySelector(".search svg");
+// -const tabInputs = document.querySelectorAll('.tab-dock input[type="radio"]');
+// -
+// -tabInputs.forEach((input, index) => {
+// -    input.addEventListener('change', () => {
+// -        if (input.checked) {
+// -            console.log(`Tab ${index} selected`);
+// -            selectlinkType(index);
+// -        }
+// -    });
+// -});
+// -
+// -function selectlinkType(index) {
+// -    if (index < 2) {
+// -        switch (index) {
+// -            case 0:
+// -                finalweatherurl = `${weatherurl}q=${searchbox.value}&appid=${apikey}`;
+// -                break;
+// -            case 1:
+// -                finalweatherurl = `${weatherurl}zip=${searchbox.value}&appid=${apikey}`;
+// -                break;
+// -        }
+// -    }
+// -    else if (index == 2) {
+// -        let numbers = inputString.match(/-?\\d+/g).map(Number);
+// -        let firstNumber = numbers[0];
+// -        let secondNumber = numbers[1];
+// -        finalweatherurl = `${weatherurl}lat=${firstNumber}&lon=${secondNumber}&appid=${apikey}`;
+// -    }
+// -    else {
+// -        console.log("tab index assign error");
+// -    }
+// -    fetchweather(finalweatherurl);
+// -}
+// -
+// -async function fetchweather(finalweatherurl) {
+// -    if (formatindex != null && formatindex < 3) {
+// -        const response = await fetch(finalweatherurl);
+// -        const data = await response.json();
+// -        // console.log(data);
+// -        return data;
+// -    }
+// -    else {
+// -        console.log("formatindex error");
+// -        return;
+// -    }
+// -}
+// -
+// -searchbtn.addEventListener("click", () => {
+// -    selectlinkType();
+// -})
+// -
+// -function assignvalues(data) {
+// -    document.querySelector('.city').innerHTML = data.name;
+// -    document.querySelector('.temp').innerHTML = Math.round(data.main.temp) + " °c";
+// -    document.querySelector('.humidity').innerHTML = data.main.humidity + " %";
+// -    document.querySelector('.wind').innerHTML = data.wind.speed + " km/h";
+// -}
+
+// new mine code working :)
+
+const apiKey = "";
+const weatherUrl = 'https://api.openweathermap.org/data/2.5/weather?';
+const searchBox = document.querySelector(".search input");
+const searchButton = document.querySelector(".search svg");
+const tabInputs = document.querySelectorAll('.tab-dock input[type="radio"]');
+const inputField = document.getElementById('inputField');
+inputField.value = "";
+let selectedtabindex;
+
+let longitude, latitude;
+
+// Check if the Geolocation API is supported
+if (navigator.geolocation) {
+    selectedtabindex = -1;
+    getWeatherData();
+} else {
+    console.log("Geolocation is not supported by this browser.");
+}
+
+
+tabInputs.forEach((input, index) => {
+    input.addEventListener('change', () => {
+        if (input.checked) {
+            console.log(index);
+            selectedtabindex = index;
+            inputField.value = "";
+        }
+    });
+});
+
+async function getWeatherData() {
+    const url = await generateUrl(selectedtabindex);
+    if (url != "") {
+        try {
+            console.log(url);
+            const weatherData = await fetchWeather(url);
+            document.querySelector(".error").style.display = "none";
+            document.querySelector(".weather").style.display = "block";
+            displayWeatherData(weatherData);
+        } catch (error) {
+            console.log(error);
+        }
+    } else {
+        console.log("url is empty error");
+    }
+}
+
+async function generateUrl(selectedtabindex) {
+    if (selectedtabindex === -1) {
+        navigator.geolocation.getCurrentPosition(
+            function (position) {
+                console.log("generateurl function");
+                latitude = position.coords.latitude;
+                longitude = position.coords.longitude;
+                console.log("Latitude: " + latitude); // Log latitude here
+                console.log("Longitude: " + longitude); // Log longitude here
+                return url = `${weatherUrl}lat=${latitude}&lon=${longitude}&appid=${apiKey}` + "&units=metric";
+            },
+            function (error) {
+                // Permission denied or error occurred
+                console.log("Error getting location: " + error.message);
+            }
+        );
+    } else if (searchBox.value != "") {
+        let url = '';
+        if (selectedtabindex < 2) {
+            url = `${weatherUrl}${selectedtabindex === 0 ? `q=${searchBox.value}&appid=${apiKey}` + "&units=metric" : `zip=${searchBox.value}`}&appid=${apiKey}` + "&units=metric";
+        } else if (selectedtabindex === 2) {
+            const numbers = searchBox.value.match(/-?\d+/g).map(Number);
+            url = `${weatherUrl}lat=${numbers[0]}&lon=${numbers[1]}&appid=${apiKey}` + "&units=metric";
+        }
+        return url;
+    } else {
+        console.log("empty search box error");
+        return "";
+    }
+}
+
+async function fetchWeather(url) {
+    const response = await fetch(url);
+    if (response.status == 404) {
+        console.log("response 404 error");
+        document.querySelector(".error").style.display = "block";
+        document.querySelector(".weather").style.display = "none";
+    } else {
+        return response.json();
+    }
+}
+
+function displayWeatherData(weatherData) {
+    const cityElement = document.querySelector('.city');
+    const tempElement = document.querySelector('.temp');
+    const humidityElement = document.querySelector('.humidity');
+    const windElement = document.querySelector('.wind');
+
+    cityElement.innerHTML = weatherData.name;
+    tempElement.innerHTML = Math.round(weatherData.main.temp) + " °c";
+    humidityElement.innerHTML = weatherData.main.humidity + " %";
+    windElement.innerHTML = weatherData.wind.speed + " km/h";
+}
+
+searchButton.addEventListener("click", () => {
+    getWeatherData();
+})

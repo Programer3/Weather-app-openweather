@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <link rel="shortcut icon" href="https://openweathermap.org/img/wn/10d@2x.png" type="image/x-icon">
+    <title>Weather App</title>
+</head>
+
+<body>
+    <div class="card">
+        <div class="search">
+            <input id="inputField" type="text" placeholder="Enter city name" spellcheck="false" autocomplete="off">
+            <button aria-label="Search">
+                <svg width="24px" height="24px" viewBox="0 0 24 24" stroke-width="1.5" fill="none"
+                    xmlns="http://www.w3.org/2000/svg" color="#000000">
+                    <path d="M17 17L21 21" stroke="#000000" stroke-width="1.5" stroke-linecap="round"
+                        stroke-linejoin="round"></path>
+                    <path
+                        d="M3 11C3 15.4183 6.58172 19 11 19C13.213 19 15.2161 18.1015 16.6644 16.6493C18.1077 15.2022 19 13.2053 19 11C19 6.58172 15.4183 3 11 3C6.58172 3 3 6.58172 3 11Z"
+                        stroke="#000000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                </svg>
+            </button>
+        </div>
+        <div class="error">
+            <p>Invalid Input OR wrong Input-tab combination</p>
+        </div>
+        <div class="tab-dock">
+            <input type="radio" id="tab1" name="tabs" checked>
+            <label for="tab1" class="tab"> City Name</label>
+            <input type="radio" id="tab2" name="tabs">
+            <label for="tab2" class="tab">Zip & country code</label>
+            <input type="radio" id="tab3" name="tabs">
+            <label for="tab3" class="tab">Long & Lat</label>
+        </div>
+        <div class="weather">
+            <img src="assets/cloud.svg" alt="Clear-Skies" class="weather-icon">
+            <h1 class="temp">22°C</h1>
+            <h2 class="city">New Delhi</h2>
+            <div class="weather-details">
+                <div class="col">
+                    <svg viewBox="0 0 24 24" stroke-width="1.5" fill="none" xmlns="http://www.w3.org/2000/svg"
+                        color="#000000">
+                        <path
+                            d="M13 21.5704C10.5996 21.8661 8.09267 21.0927 6.25001 19.25C3.07437 16.0744 3.07437 10.9256 6.25001 7.74999L11.5757 2.42426C11.8101 2.18995 12.1899 2.18995 12.4243 2.42426L17.75 7.75001C19.982 9.98202 20.6453 13.1887 19.7397 16"
+                            stroke="#000000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                        <path d="M16 20L18 22L22 18" stroke="#000000" stroke-width="1.5" stroke-linecap="round"
+                            stroke-linejoin="round"></path>
+                    </svg>
+                    <div>
+                        <p class="humidity">50%</p>
+                        <p>Humidity</p>
+                    </div>
+                </div>
+                <div class="col">
+                    <svg stroke-width="1.5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
+                        color="#000000">
+                        <path d="M18.2785 7C19.7816 7 21 8.11929 21 9.5C21 10.8807 19.7816 12 18.2785 12H3"
+                            stroke="#000000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                        <path d="M17.9375 20C19.0766 20 20.5 19.5 20.5 17.5C20.5 15.5 19.0766 15 17.9375 15H3"
+                            stroke="#000000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                        <path d="M10.4118 4C11.8412 4 13 5.11929 13 6.5C13 7.88071 11.8412 9 10.4118 9H3"
+                            stroke="#000000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                    </svg>
+                    <div>
+                        <p class="wind">15Km/hr</p>
+                        <p>Wind Speed</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="app.js"></script>
+</body>
+
+</html>
