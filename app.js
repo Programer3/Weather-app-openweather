@@ -1,5 +1,6 @@
-require('dotenv').config();
-const apiKey = process.env.API_KEY;
+// require('dotenv').config();
+// const apiKey = process.env.API_KEY;
+const apiKey = '{{ secrets.API_KEY }}';
 const weatherUrl = "https://api.openweathermap.org/data/2.5/weather";
 const iconUrl = "https://openweathermap.org/img/wn/";
 const weatherIcon = document.querySelector(".weather-icon");
